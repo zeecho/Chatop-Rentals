@@ -1,8 +1,6 @@
 package com.openclassrooms.chatoprentals.model;
 
-import java.security.Timestamp;
-
-import org.springframework.security.core.userdetails.User;
+import java.sql.Timestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

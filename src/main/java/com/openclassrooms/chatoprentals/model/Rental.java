@@ -1,9 +1,8 @@
 package com.openclassrooms.chatoprentals.model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,7 +26,7 @@ public class Rental {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String name;
 	
 	private Double surface;
@@ -43,14 +42,6 @@ public class Rental {
 			)
 	@JoinColumn(name="owner_id")
 	private DBUser owner;
-	
-	public DBUser getOwnerId() {
-		return owner;
-	}
-
-	public void setOwnerId(DBUser owner) {
-		this.owner = owner;
-	}
 
 	@Column(name = "created_at")
 	private Timestamp createdAt;
@@ -65,14 +56,10 @@ public class Rental {
 		   )
 	List<Message> messages = new ArrayList<>();
 
-	public List<Message> getMessages() {
-		return messages;
+	public int getId() {
+		return id;
 	}
-
-	public void setMessages(List<Message> messages) {
-		this.messages = messages;
-	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -111,5 +98,41 @@ public class Rental {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public DBUser getOwner() {
+		return owner;
+	}
+
+	public void setOwner(DBUser owner) {
+		this.owner = owner;
+	}
+	
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

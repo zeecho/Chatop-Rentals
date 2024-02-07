@@ -1,6 +1,6 @@
 package com.openclassrooms.chatoprentals.model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +33,10 @@ public class DBUser {
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 
+	public int getId() {
+		return id;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -55,5 +59,21 @@ public class DBUser {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 }
