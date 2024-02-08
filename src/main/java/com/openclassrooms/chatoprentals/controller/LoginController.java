@@ -1,6 +1,8 @@
 package com.openclassrooms.chatoprentals.controller;
 
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +41,11 @@ public class LoginController {
 	}
 	
 	@PostMapping("/login")
-	public String getToken(Authentication authentication) {
-		String token = jwtService.generateToken(authentication);
-		return token;
+	public ResponseEntity<Object> getToken(Authentication authentication) {
+	    String token = jwtService.generateToken(authentication);
+	    Map<String, String> response = new HashMap<>();
+	    response.put("token", token);
+	    return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping("/me")
