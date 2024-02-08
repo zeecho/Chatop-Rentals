@@ -58,39 +58,57 @@ public class RentalController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Object> createRental(RentalDto rentalDto) throws ParseException {
-        try {
+        String messageString = "";
+        HttpStatus status = HttpStatus.CREATED;
+    	try {
 	        Rental rental = convertToEntity(rentalDto);
 	        rentalService.createRental(rental);
-	        Map<String, String> response = new HashMap<>();
-	        response.put("message", "Rental created !");
-	        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+	        messageString = "Rental created !";
+	        return getResponseEntityWithMessage(messageString, status);
         } catch (Exception e) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", "Failed to create rental: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        	messageString = "Failed to create rental: " + e.getMessage();
+        	return getResponseEntityWithMessage(messageString, status);
 		}
     }
     
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateRental(@PathVariable("id") int id, RentalDto rentalDto) throws ParseException {
-        Rental rental = rentalService.getRentalById(id);
-        DBUser currentUser = dbUserService.getCurrentUser();
-        
-        if (rental == null) {
-            throw new EntityNotFoundException("Rental not found");
-        }
-        
-        if (!Objects.equals(rental.getOwner().getId(), currentUser.getId())) {
-            throw new ParseException("You are not authorized to update this rental", 401);
-        }
-        
-    	if(!Objects.equals(id, rentalDto.getId())){
-            throw new IllegalArgumentException("IDs don't match");
-        }
-        rental = convertToEntity(rentalDto);
-        rentalService.updateRental(rental);
+    public ResponseEntity<Object> updateRental(@PathVariable("id") int id, RentalDto rentalDto) throws ParseException {
+        String messageString = "";
+        HttpStatus status = HttpStatus.OK;
+    	try {
+	    	Rental rental = rentalService.getRentalById(id);
+	        DBUser currentUser = dbUserService.getCurrentUser();
+	        
+	        if (rental == null) {
+	            throw new EntityNotFoundException("Rental not found");
+	        }
+	        
+	        if (!Objects.equals(rental.getOwner().getId(), currentUser.getId())) {
+	            throw new ParseException("You are not authorized to update this rental", 401);
+	        }
+	        
+	    	if(!Objects.equals(id, rentalDto.getId())){
+	            throw new IllegalArgumentException("IDs don't match");
+	        }
+	        rental = convertToEntity(rentalDto);
+	        rentalService.updateRental(rental);
+	        
+	        messageString = "Rental updated !";
+	        return getResponseEntityWithMessage(messageString, status);
+        } catch (Exception e) {
+            messageString = "Failed to update rental: " + e.getMessage();
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            return getResponseEntityWithMessage(messageString, status);
+		}
     }
+    
+    private ResponseEntity<Object> getResponseEntityWithMessage(String message, HttpStatus status) {
+    	Map<String, String> response = new HashMap<>();
+        response.put("message", message);
+        return ResponseEntity.status(status).body(response);
+	}
 	
     private RentalDto convertToDto(Rental rental) {
         RentalDto rentalDto = modelMapper.map(rental, RentalDto.class);
