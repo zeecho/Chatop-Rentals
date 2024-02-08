@@ -3,13 +3,16 @@ package com.openclassrooms.chatoprentals.controller;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +44,7 @@ public class RentalController {
 	@GetMapping
 	public List<RentalDto> getRentals() {
 //		List<Rental> rentals = rentalService.getRentalsList(page, size, sortDir, sort);
-		List<Rental> rentals = rentalService.getRentalsList(0, 10, "ASC", "id");
+		List<Rental> rentals = rentalService.getRentalsList(0, 1000, "ASC", "id");
 		return rentals.stream()
 				.map(this::convertToDto)
 				.collect(Collectors.toList());
@@ -54,10 +57,18 @@ public class RentalController {
 	
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-	public RentalDto createRental(RentalDto rentalDto) throws ParseException {
-        Rental rental = convertToEntity(rentalDto);
-        Rental rentalCreated = rentalService.createRental(rental);
-        return convertToDto(rentalCreated);
+	public ResponseEntity<Object> createRental(RentalDto rentalDto) throws ParseException {
+        try {
+	        Rental rental = convertToEntity(rentalDto);
+	        rentalService.createRental(rental);
+	        Map<String, String> response = new HashMap<>();
+	        response.put("message", "Rental created !");
+	        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Failed to create rental: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		}
     }
     
     @PutMapping(value = "/{id}")
