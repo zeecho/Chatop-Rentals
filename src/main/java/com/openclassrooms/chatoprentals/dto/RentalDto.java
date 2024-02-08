@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class RentalDto {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     
@@ -23,11 +25,13 @@ public class RentalDto {
 	
 	private DBUserDto owner;
 	
+    @JsonProperty("created_at")
 	private Timestamp createdAt = new Timestamp(new Date().getTime());
-	
+    
+    @JsonProperty("updated_at")
 	private Timestamp updatedAt = new Timestamp(new Date().getTime());
 	
-    public Timestamp getCreatedAtConverted() throws ParseException {
+    public Timestamp getCreatedAt() throws ParseException {
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         return new Timestamp(dateFormat.parse(dateFormat.format(this.createdAt)).getTime());
     }
@@ -38,7 +42,7 @@ public class RentalDto {
         this.createdAt = new Timestamp(date.getTime());
     }
     
-    public Timestamp getUpdatedAtConverted() throws ParseException {
+    public Timestamp getUpdatedAt() throws ParseException {
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         return new Timestamp(dateFormat.parse(dateFormat.format(this.updatedAt)).getTime());
     }
