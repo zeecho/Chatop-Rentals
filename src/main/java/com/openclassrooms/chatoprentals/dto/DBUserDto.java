@@ -17,6 +17,8 @@ public class DBUserDto {
 	
     private String name;
     
+    private String password;
+    
     @JsonProperty("created_at")
 	private Timestamp createdAt = new Timestamp(new Date().getTime());
 	
@@ -66,5 +68,13 @@ public class DBUserDto {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

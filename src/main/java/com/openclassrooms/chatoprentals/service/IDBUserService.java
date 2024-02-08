@@ -6,4 +6,8 @@ public interface IDBUserService {
     DBUser getCurrentUser();
     
 	DBUser getDBUserById(Integer id);
+	
+	DBUser getDBUserByEmail(String email);
+	
+	DBUser saveDbUser(DBUser dbUser);
 }

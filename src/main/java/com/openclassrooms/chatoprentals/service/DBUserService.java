@@ -19,7 +19,7 @@ public class DBUserService implements IDBUserService {
 		return dbUserRepository.findById(id);
 	}
 	
-	public DBUser getDBUserByUsername(final String username) {
+	public DBUser getDBUserByEmail(final String username) {
 		return dbUserRepository.findByEmail(username);
 	}
 	
@@ -40,7 +40,7 @@ public class DBUserService implements IDBUserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
-        	return this.getDBUserByUsername(authentication.getName());
+        	return this.getDBUserByEmail(authentication.getName());
         } else {
         	return null;
         }
