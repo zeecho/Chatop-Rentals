@@ -42,12 +42,15 @@ public class RentalController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public List<RentalDto> getRentals() {
+	public ResponseEntity<Map<String, List<RentalDto>>> getRentals() {
 //		List<Rental> rentals = rentalService.getRentalsList(page, size, sortDir, sort);
 		List<Rental> rentals = rentalService.getRentalsList(0, 1000, "ASC", "id");
-		return rentals.stream()
+		List<RentalDto> rentalDtos = rentals.stream()
 				.map(this::convertToDto)
 				.collect(Collectors.toList());
+	    Map<String, List<RentalDto>> response = new HashMap<>();
+	    response.put("rentals", rentalDtos);
+	    return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping(value = "/{id}")
