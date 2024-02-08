@@ -9,7 +9,7 @@ import java.util.TimeZone;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RentalDto {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
 	private int id;
 	

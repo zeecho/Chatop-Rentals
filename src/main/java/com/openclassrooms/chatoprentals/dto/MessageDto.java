@@ -6,24 +6,31 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class DBUserDto {
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm.ss");
-	
+public class MessageDto {
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
 	private int id;
 	
-	private String email;
+	private String message;
 	
-    private String name;
-    
-    @JsonIgnore
-    private String password;
-    
+	@JsonProperty("rental_id")
+	private int rentalId;
+	
+    public int getRentalId() {
+        return rentalId;
+    }
+
+    public void setRentalId(int rentalId) {
+        this.rentalId = rentalId;
+    }
+	
+	private DBUserDto dbUserDto;
+	
     @JsonProperty("created_at")
 	private Timestamp createdAt = new Timestamp(new Date().getTime());
-	
+    
     @JsonProperty("updated_at")
 	private Timestamp updatedAt = new Timestamp(new Date().getTime());
 	
@@ -47,22 +54,6 @@ public class DBUserDto {
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         this.updatedAt = new Timestamp(date.getTime());
     }
-    
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
 	public int getId() {
 		return id;
@@ -72,11 +63,19 @@ public class DBUserDto {
 		this.id = id;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public DBUserDto getDbUserDto() {
+		return dbUserDto;
+	}
+
+	public void setDbUserDto(DBUserDto dbUserDto) {
+		this.dbUserDto = dbUserDto;
 	}
 }

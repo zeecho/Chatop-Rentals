@@ -36,6 +36,14 @@ public class Message {
 	@JoinColumn(name="user_id")
 	private DBUser dbUser;
 	
+	private String message;
+	
+	@Column(name = "created_at")
+	private Timestamp createdAt;
+	
+	@Column(name = "updated_at")
+	private Timestamp updatedAt;
+
 	public DBUser getDbUser() {
 		return dbUser;
 	}
@@ -52,19 +60,32 @@ public class Message {
 		this.rental = rental;
 	}
 
-	private String message;
-	
-	@Column(name = "created_at")
-	private Timestamp createdAt;
-	
-	@Column(name = "updated_at")
-	private Timestamp updatedAt;
-
 	public String getMessage() {
 		return message;
 	}
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public int getId() {
+		return id;
 	}
 }

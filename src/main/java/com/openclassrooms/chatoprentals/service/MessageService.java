@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Service
-public class MessageService {
+public class MessageService implements IMessageService {
 	@Autowired
 	private MessageRepository messageRepository;
 	
