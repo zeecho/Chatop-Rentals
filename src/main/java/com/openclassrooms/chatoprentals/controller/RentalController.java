@@ -1,7 +1,12 @@
 package com.openclassrooms.chatoprentals.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +15,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +28,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.openclassrooms.chatoprentals.dto.RentalDto;
+import com.openclassrooms.chatoprentals.dto.RentalShowDto;
 import com.openclassrooms.chatoprentals.model.DBUser;
 import com.openclassrooms.chatoprentals.model.Rental;
 import com.openclassrooms.chatoprentals.service.IDBUserService;
@@ -41,20 +49,24 @@ public class RentalController {
 	@Autowired 
 	private ModelMapper modelMapper;
 	
+	Logger logger = LoggerFactory.getLogger(RentalController.class);
+	
 	@GetMapping
-	public ResponseEntity<Map<String, List<RentalDto>>> getRentals() {
+	public ResponseEntity<Map<String, List<RentalShowDto>>> getRentals() {
 		List<Rental> rentals = rentalService.getRentalsList();
-		List<RentalDto> rentalDtos = rentals.stream()
-				.map(this::convertToDto)
+		List<RentalShowDto> rentalDtos = rentals.stream()
+				.map(this::convertToRentalShowDto)
 				.collect(Collectors.toList());
-	    Map<String, List<RentalDto>> response = new HashMap<>();
+	    Map<String, List<RentalShowDto>> response = new HashMap<>();
 	    response.put("rentals", rentalDtos);
 	    return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public RentalDto getRental(@PathVariable("id") final int id) {
-		return convertToDto(rentalService.getRentalById(id));
+	public RentalShowDto getRental(@PathVariable("id") final int id) {
+		RentalShowDto rentalShowDto = convertToRentalShowDto(rentalService.getRentalById(id));
+
+		return rentalShowDto;
 	}
 	
     @PostMapping
@@ -111,27 +123,61 @@ public class RentalController {
         response.put("message", message);
         return ResponseEntity.status(status).body(response);
 	}
-	
-    private RentalDto convertToDto(Rental rental) {
-        RentalDto rentalDto = modelMapper.map(rental, RentalDto.class);
-        rentalDto.setCreatedAt(rental.getCreatedAt());
-        rentalDto.setUpdatedAt(rental.getUpdatedAt());
-        return rentalDto;
+//	
+//    private RentalDto convertToDto(Rental rental) {
+//        RentalDto rentalDto = modelMapper.map(rental, RentalDto.class);
+//        rentalDto.setCreatedAt(rental.getCreatedAt());
+//        rentalDto.setUpdatedAt(rental.getUpdatedAt());
+//        
+//        return rentalDto;
+//    }
+    
+    private RentalShowDto convertToRentalShowDto(Rental rental) {
+        RentalShowDto rentalShowDto = modelMapper.map(rental, RentalShowDto.class);
+        rentalShowDto.setCreatedAt(rental.getCreatedAt());
+        rentalShowDto.setUpdatedAt(rental.getUpdatedAt());
+        if (StringUtils.hasText(rental.getPicture())) {
+            rentalShowDto.setPicture("/assets/" + rental.getPicture());
+        }
+
+        return rentalShowDto;
     }
     
-    private Rental convertToEntity(RentalDto rentalDto) throws ParseException {
+    private Rental convertToEntity(RentalDto rentalDto) throws ParseException, IOException {
         Rental rental = modelMapper.map(rentalDto, Rental.class);
 
         Date date = new Date();
         rental.setUpdatedAt(new Timestamp(date.getTime()));
         DBUser dbUser = dbUserService.getCurrentUser();
         rental.setOwner(dbUser);
+        
+        String filename = handleFileUpload(rentalDto);
+        rental.setPicture(filename);
       
         if (rentalDto.getId() != null && rentalDto.getId() != 0) {
         	rental.setId(rentalDto.getId());
             Rental oldRental = rentalService.getRentalById(rentalDto.getId());
             rental.setCreatedAt(oldRental.getCreatedAt());
+            rental.setPicture(rentalDto.getPicture().getOriginalFilename());
         }
         return rental;
     }
+    
+    private String handleFileUpload(RentalDto rentalDto) throws IOException {
+        String fileName = getFileName(rentalDto);
+        byte[] bytes = rentalDto.getPicture().getBytes();
+        Path path = Paths.get("../P3-Full-Stack-portail-locataire/src/assets/" + fileName);
+        Files.write(path, bytes);
+        
+        return fileName;
+	}
+    
+    private String getFileName(RentalDto rentalDto) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+        String timestamp = dateFormat.format(new Date());
+        String originalFilename = rentalDto.getPicture().getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf('.'));
+
+        return timestamp + fileExtension;
+	}
 }

@@ -6,12 +6,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RentalDto {
+public class RentalShowDto {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static final String assetsPath = "/assets/";
 
 	private int id;
 
@@ -21,7 +20,7 @@ public class RentalDto {
 
 	private Double price;
 
-	private MultipartFile picture;
+	private String picture;
 
 	private String description;
 
@@ -52,6 +51,10 @@ public class RentalDto {
 	public void setUpdatedAt(Date date) {
 		dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
 		this.updatedAt = new Timestamp(date.getTime());
+	}
+
+	public String getPictureFullPath() {
+		return assetsPath + this.picture;
 	}
 
 	public Integer getId() {
@@ -86,11 +89,11 @@ public class RentalDto {
 		this.price = price;
 	}
 
-	public MultipartFile getPicture() {
+	public String getPicture() {
 		return picture;
 	}
 
-	public void setPicture(MultipartFile picture) {
+	public void setPicture(String picture) {
 		this.picture = picture;
 	}
 

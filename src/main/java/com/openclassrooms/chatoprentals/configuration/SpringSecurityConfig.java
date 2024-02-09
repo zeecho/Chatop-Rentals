@@ -26,44 +26,44 @@ import com.nimbusds.jose.jwk.source.ImmutableSecret;
 public class SpringSecurityConfig {
 	@Autowired
 	CustomUserDetailsService customUserDetailsService;
-	
+
 	private String jwtKey = "938a5d25009dae772fad0610881fc451026db99361fa332b4be28b00ee8813d7";
-	
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// allow all
-//		return http.authorizeHttpRequests((auth) -> auth.anyRequest().permitAll()).build();
+		//		return http.authorizeHttpRequests((auth) -> auth.anyRequest().permitAll()).build();
 
 		return http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/api/auth/login").permitAll()
 						.requestMatchers("/api/auth/register").permitAll()
 						.anyRequest().authenticated())
 				.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-				.httpBasic(Customizer.withDefaults())
 				.build();
 	}
-	
+
 	@Bean
 	public JwtDecoder jwtDecoder() {
 		SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length,"RSA");
 		return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
 	}
-	
+
 	@Bean
 	public JwtEncoder jwtEncoder() {
 		return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getBytes()));
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
 	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
 		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-	authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
+		authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
 		return authenticationManagerBuilder.build();
 	}
 
