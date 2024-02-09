@@ -24,18 +24,8 @@ public class RentalService implements IRentalService {
 		return rentalRepository.findById(id);
 	}
 	
-	public Iterable<Rental> getRentals() {
-		return rentalRepository.findAll();
-	}
-	
-	public List<Rental> getRentalsList(int page, int size, String sortDir, String sort) {
-	    PageRequest pageReq
-	     = PageRequest.of(page, size, Sort.Direction.fromString(sortDir), sort);
-	 
-//	    Page<Rental> rentals = rentalRepository.findByOwner_Id(getCurrentUser(), pageReq);
-	    Page<Rental> rentals = rentalRepository.findAll(pageReq);
-
-	    return rentals.getContent();
+	public List<Rental> getRentalsList() {
+	    return rentalRepository.findAll();
 	}
 	
 	public void deleteRental(final int id) {

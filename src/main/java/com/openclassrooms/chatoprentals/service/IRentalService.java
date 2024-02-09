@@ -5,7 +5,7 @@ import java.util.List;
 import com.openclassrooms.chatoprentals.model.Rental;
 
 public interface IRentalService {
-	List<Rental> getRentalsList(int page, int size, String sortDir, String sort);
+	List<Rental> getRentalsList();
 	
 	void updateRental(Rental rental);
 	

@@ -43,8 +43,7 @@ public class RentalController {
 	
 	@GetMapping
 	public ResponseEntity<Map<String, List<RentalDto>>> getRentals() {
-//		List<Rental> rentals = rentalService.getRentalsList(page, size, sortDir, sort);
-		List<Rental> rentals = rentalService.getRentalsList(0, 1000, "ASC", "id");
+		List<Rental> rentals = rentalService.getRentalsList();
 		List<RentalDto> rentalDtos = rentals.stream()
 				.map(this::convertToDto)
 				.collect(Collectors.toList());
