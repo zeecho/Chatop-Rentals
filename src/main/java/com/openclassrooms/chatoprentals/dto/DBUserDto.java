@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DBUserDto {
@@ -17,9 +16,6 @@ public class DBUserDto {
 	private String email;
 	
     private String name;
-    
-    @JsonIgnore
-    private String password;
     
     @JsonProperty("created_at")
 	private Timestamp createdAt = new Timestamp(new Date().getTime());
@@ -70,13 +66,5 @@ public class DBUserDto {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 }
