@@ -1,9 +1,9 @@
 package com.openclassrooms.chatoprentals.dto;
 
-import java.util.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 import org.springframework.web.multipart.MultipartFile;

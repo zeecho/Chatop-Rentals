@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import com.openclassrooms.chatoprentals.model.DBUser;
 import com.openclassrooms.chatoprentals.repository.DBUserRepository;
 
