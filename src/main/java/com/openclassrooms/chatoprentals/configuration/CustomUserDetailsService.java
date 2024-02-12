@@ -17,7 +17,7 @@ import com.openclassrooms.chatoprentals.repository.DBUserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-	
+
 	@Autowired
 	private DBUserRepository dbUserRepository;
 

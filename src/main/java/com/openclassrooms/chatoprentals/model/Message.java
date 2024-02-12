@@ -23,24 +23,24 @@ public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@ManyToOne(
 			cascade = CascadeType.ALL
 			)
 	@JoinColumn(name = "rental_id")
 	private Rental rental;
-	
+
 	@ManyToOne(
 			cascade = CascadeType.ALL
 			)
 	@JoinColumn(name="user_id")
 	private DBUser dbUser;
-	
+
 	private String message;
-	
+
 	@Column(name = "created_at")
 	private Timestamp createdAt;
-	
+
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 
@@ -68,7 +68,6 @@ public class Message {
 		this.message = message;
 	}
 
-	
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}

@@ -15,19 +15,19 @@ import lombok.Data;
 public class MessageService implements IMessageService {
 	@Autowired
 	private MessageRepository messageRepository;
-	
+
 	public Optional<Message> getMessage(final int id) {
 		return messageRepository.findById(id);
 	}
-	
+
 	public Iterable<Message> getMessages() {
 		return messageRepository.findAll();
 	}
-	
+
 	public void deleteMessages(final int id) {
 		messageRepository.deleteById(id);
 	}
-	
+
 	public Message saveMessage(Message message) {
 		return messageRepository.save(message);
 	}

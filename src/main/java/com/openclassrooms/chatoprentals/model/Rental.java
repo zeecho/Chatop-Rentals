@@ -28,15 +28,15 @@ public class Rental {
 	private int id;
 
 	private String name;
-	
+
 	private Double surface;
-	
+
 	private Double price;
-	
+
 	private String picture;
-	
+
 	private String description;
-	
+
 	@ManyToOne(
 			cascade = CascadeType.ALL
 			)
@@ -45,21 +45,21 @@ public class Rental {
 
 	@Column(name = "created_at")
 	private Timestamp createdAt;
-	
+
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
-	
+
 	@OneToMany(
 			mappedBy = "rental",
 			cascade = CascadeType.ALL, 
 			orphanRemoval = true
-		   )
+			)
 	List<Message> messages = new ArrayList<>();
 
 	public int getId() {
 		return id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -99,7 +99,7 @@ public class Rental {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public DBUser getOwner() {
 		return owner;
 	}
@@ -107,7 +107,7 @@ public class Rental {
 	public void setOwner(DBUser owner) {
 		this.owner = owner;
 	}
-	
+
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
@@ -123,7 +123,7 @@ public class Rental {
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
+
 	public List<Message> getMessages() {
 		return messages;
 	}

@@ -11,10 +11,10 @@ import com.openclassrooms.chatoprentals.model.Rental;
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Integer> {
 	Page<Rental> findByOwner_Id(Integer ownerId, Pageable pageReq);
-	
-    default Page<Rental> findByOwner_Id(DBUser user, Pageable pageReq) {
-        Page<Rental> rentals = findByOwner_Id(user.getId(), pageReq);
 
-        return rentals;
-    }
+	default Page<Rental> findByOwner_Id(DBUser user, Pageable pageReq) {
+		Page<Rental> rentals = findByOwner_Id(user.getId(), pageReq);
+
+		return rentals;
+	}
 }

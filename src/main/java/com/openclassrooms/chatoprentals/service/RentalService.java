@@ -16,15 +16,15 @@ import lombok.Data;
 public class RentalService implements IRentalService {
 	@Autowired
 	private RentalRepository rentalRepository;
-    
+
 	public Optional<Rental> getRental(final int id) {
 		return rentalRepository.findById(id);
 	}
-	
+
 	public List<Rental> getRentalsList() {
-	    return rentalRepository.findAll();
+		return rentalRepository.findAll();
 	}
-	
+
 	public void deleteRental(final int id) {
 		rentalRepository.deleteById(id);
 	}

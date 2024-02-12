@@ -6,10 +6,10 @@ import com.openclassrooms.chatoprentals.model.Rental;
 
 public interface IRentalService {
 	List<Rental> getRentalsList();
-	
+
 	void updateRental(Rental rental);
-	
+
 	Rental createRental(Rental rental);
-	
+
 	Rental getRentalById(Integer id);
 }

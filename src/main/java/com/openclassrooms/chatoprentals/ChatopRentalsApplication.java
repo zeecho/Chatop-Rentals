@@ -19,24 +19,26 @@ public class ChatopRentalsApplication {
 		SpringApplication.run(ChatopRentalsApplication.class, args);
 	}
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
 
 	@Bean
 	public OpenAPI customOpenAPI(@Value("${springdoc.version}") String appVersion) {
 		return new OpenAPI()
 				.components(new Components())
 				.info(new Info().title("Châtop Rentals API").version(appVersion))
-                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-                .components(new Components()
-                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")
-                                .in(SecurityScheme.In.HEADER)
-                                .name("Authorization")))
+				.addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+				.components(new Components()
+						.addSecuritySchemes("bearerAuth", new SecurityScheme()
+								.type(SecurityScheme.Type.HTTP)
+								.scheme("bearer")
+								.bearerFormat("JWT")
+								.in(SecurityScheme.In.HEADER)
+								.name("Authorization")
+								)
+						)
 				;
 	}
 }

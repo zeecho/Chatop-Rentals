@@ -20,16 +20,16 @@ public class DBUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String email;
-	
+
 	private String name;
-	
+
 	private String password;
 
 	@Column(name = "created_at")
 	private Timestamp createdAt;
-	
+
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 

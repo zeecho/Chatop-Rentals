@@ -34,56 +34,56 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Messages", description = "Endpoints to handle messages left on rentals")
 public class MessageController {
 	public JWTService jwtService;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
 	@Autowired
 	private IDBUserService dbUserService;
-	
+
 	@Autowired
 	private IMessageService messageService;
-	
+
 	@Autowired
 	private IRentalService rentalService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Add a new message to a rental")
-    @SecurityRequirement(name = "bearerAuth")
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	@Operation(summary = "Add a new message to a rental")
+	@SecurityRequirement(name = "bearerAuth")
 	public ResponseEntity<Object> createMessage(@RequestBody MessageDto messageDto) throws ParseException {
-        String messageString = "";
-        HttpStatus status = HttpStatus.CREATED;
-    	try {
-	        Message message = convertToEntity(messageDto);
-	        messageService.saveMessage(message);
+		String messageString = "";
+		HttpStatus status = HttpStatus.CREATED;
+		try {
+			Message message = convertToEntity(messageDto);
+			messageService.saveMessage(message);
 
-	        messageString = "Message sent with success!";
-	        return getResponseEntityWithMessage(messageString, status);
-        } catch (Exception e) {
-        	messageString = "Failed to send message: " + e.getMessage();
-        	return getResponseEntityWithMessage(messageString, status);
+			messageString = "Message sent with success!";
+			return getResponseEntityWithMessage(messageString, status);
+		} catch (Exception e) {
+			messageString = "Failed to send message: " + e.getMessage();
+			return getResponseEntityWithMessage(messageString, status);
 		}
-    }
-    
-    private ResponseEntity<Object> getResponseEntityWithMessage(String message, HttpStatus status) {
-    	Map<String, String> response = new HashMap<>();
-        response.put("message", message);
-        return ResponseEntity.status(status).body(response);
 	}
-    
 
-    private Message convertToEntity(MessageDto messageDto) throws ParseException {
-        Message message = modelMapper.map(messageDto, Message.class);
+	private ResponseEntity<Object> getResponseEntityWithMessage(String message, HttpStatus status) {
+		Map<String, String> response = new HashMap<>();
+		response.put("message", message);
+		return ResponseEntity.status(status).body(response);
+	}
 
-        Date date = new Date();
-        message.setUpdatedAt(new Timestamp(date.getTime()));
-        //TODO set the user given in the json? Maybe check if it's the same as the current user?
-        DBUser dbUser = dbUserService.getCurrentUser();
-        message.setDbUser(dbUser);
-        Rental rental = rentalService.getRentalById(messageDto.getRentalId());
-        message.setRental(rental);
-        
-        return message;
-    }
+
+	private Message convertToEntity(MessageDto messageDto) throws ParseException {
+		Message message = modelMapper.map(messageDto, Message.class);
+
+		Date date = new Date();
+		message.setUpdatedAt(new Timestamp(date.getTime()));
+
+		DBUser dbUser = dbUserService.getCurrentUser();
+		message.setDbUser(dbUser);
+		Rental rental = rentalService.getRentalById(messageDto.getRentalId());
+		message.setRental(rental);
+
+		return message;
+	}
 }

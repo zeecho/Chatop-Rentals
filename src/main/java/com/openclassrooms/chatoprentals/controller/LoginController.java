@@ -86,7 +86,7 @@ public class LoginController {
 
 	@GetMapping("/me")
 	@Operation(summary = "Get informations about currently logged in user", description = "Returns a token")
-    @SecurityRequirement(name = "bearerAuth")
+	@SecurityRequirement(name = "bearerAuth")
 	public DBUserDto me() throws ParseException {
 		return convertToDto(dbUserService.getCurrentUser());
 	}
@@ -95,7 +95,6 @@ public class LoginController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@Operation(summary = "Create a new user")
 	public ResponseEntity<Object> registerUser(@RequestBody RegisterDto registerDto) {
-		//    	try {
 		DBUser existingUser = dbUserService.getDBUserByEmail(registerDto.getEmail());
 		if (existingUser != null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
@@ -109,15 +108,7 @@ public class LoginController {
 			loginDto.setPassword(registerDto.getPassword());
 			String token = getToken(loginDto); 
 			return getTokenResponseEntity(token);
-			//        	login(email, password);
-			//            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
-			//        } else {
-			//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register user");
 		}
-		//    	} catch (Exception e) {
-		//    		logger.error("error while trying to register a new user: " + e.getMessage());
-		////            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register user");
-		//		}
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register user");
 	}
 

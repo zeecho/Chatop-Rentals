@@ -8,8 +8,8 @@ import com.openclassrooms.chatoprentals.model.DBUser;
 @Repository
 public interface DBUserRepository extends JpaRepository<DBUser, Integer> {
 	public DBUser findByEmail(String username);
-	
+
 	public DBUser getDBUserById(int id);
-	
+
 	public DBUser findById(int id);
 }
