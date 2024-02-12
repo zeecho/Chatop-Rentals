@@ -82,3 +82,7 @@ Execute the jar:
 ## Run the interface 
 
 If you want to run the front-end as well, it's right here: https://github.com/OpenClassrooms-Student-Center/Developpez-le-back-end-en-utilisant-Java-et-Spring
+
+## API Documentation
+
+You can find the API Documentation here: http://localhost:3001/swagger-ui/index.html
