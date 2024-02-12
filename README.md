@@ -78,3 +78,7 @@ Execute the jar:
 > cd chatop_build
 
 > java -jar BankApplicationBackend-0.0.1-SNAPSHOT.jar
+
+## Run the interface 
+
+If you want to run the front-end as well, it's right here: https://github.com/OpenClassrooms-Student-Center/Developpez-le-back-end-en-utilisant-Java-et-Spring
