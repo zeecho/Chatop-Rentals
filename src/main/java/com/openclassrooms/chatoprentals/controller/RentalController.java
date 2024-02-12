@@ -36,10 +36,14 @@ import com.openclassrooms.chatoprentals.model.Rental;
 import com.openclassrooms.chatoprentals.service.IDBUserService;
 import com.openclassrooms.chatoprentals.service.IRentalService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/api/rentals")
+@Tag(name = "Rentals", description = "Endpoints used to manage and retrieve rentals")
 public class RentalController {
 	@Autowired
 	private IRentalService rentalService;
@@ -53,6 +57,8 @@ public class RentalController {
 	Logger logger = LoggerFactory.getLogger(RentalController.class);
 	
 	@GetMapping
+	@Operation(summary = "Retrieve all rentals")
+    @SecurityRequirement(name = "bearerAuth")
 	public ResponseEntity<Map<String, List<RentalShowDto>>> getRentals() {
 		List<Rental> rentals = rentalService.getRentalsList();
 		List<RentalShowDto> rentalDtos = rentals.stream()
@@ -62,8 +68,10 @@ public class RentalController {
 	    response.put("rentals", rentalDtos);
 	    return ResponseEntity.ok(response);
 	}
-	
+
 	@GetMapping(value = "/{id}")
+	@Operation(summary = "Retrieve one specific rental")
+    @SecurityRequirement(name = "bearerAuth")
 	public RentalShowDto getRental(@PathVariable("id") final int id) {
 		RentalShowDto rentalShowDto = convertToRentalShowDto(rentalService.getRentalById(id));
 
@@ -72,6 +80,8 @@ public class RentalController {
 	
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a new rental")
+    @SecurityRequirement(name = "bearerAuth")
 	public ResponseEntity<Object> createRental(RentalDto rentalDto) throws ParseException {
         String messageString = "";
         HttpStatus status = HttpStatus.CREATED;
@@ -89,6 +99,8 @@ public class RentalController {
     
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Update a rental")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Object> updateRental(@PathVariable("id") int id, RentalDto rentalDto) throws ParseException {
         String messageString = "";
         HttpStatus status = HttpStatus.OK;

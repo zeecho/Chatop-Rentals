@@ -25,8 +25,13 @@ import com.openclassrooms.chatoprentals.service.IMessageService;
 import com.openclassrooms.chatoprentals.service.IRentalService;
 import com.openclassrooms.chatoprentals.service.JWTService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/messages/**")
+@Tag(name = "Messages", description = "Endpoints to handle messages left on rentals")
 public class MessageController {
 	public JWTService jwtService;
 	
@@ -44,6 +49,8 @@ public class MessageController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Add a new message to a rental")
+    @SecurityRequirement(name = "bearerAuth")
 	public ResponseEntity<Object> createMessage(@RequestBody MessageDto messageDto) throws ParseException {
         String messageString = "";
         HttpStatus status = HttpStatus.CREATED;

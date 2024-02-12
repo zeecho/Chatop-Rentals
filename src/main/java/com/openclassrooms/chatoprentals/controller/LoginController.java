@@ -30,8 +30,13 @@ import com.openclassrooms.chatoprentals.model.DBUser;
 import com.openclassrooms.chatoprentals.service.IDBUserService;
 import com.openclassrooms.chatoprentals.service.JWTService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Account", description = "Account management (from a user point of view)")
 public class LoginController {
 	public JWTService jwtService;
 
@@ -54,6 +59,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
+	@Operation(summary = "Logs user in")
 	public ResponseEntity<Object> login(@RequestBody LoginDto loginDto) {
 		logger.info("login attempt with email: {}", loginDto.getEmail());
 
@@ -79,12 +85,15 @@ public class LoginController {
 	}
 
 	@GetMapping("/me")
+	@Operation(summary = "Get informations about currently logged in user", description = "Returns a token")
+    @SecurityRequirement(name = "bearerAuth")
 	public DBUserDto me() throws ParseException {
 		return convertToDto(dbUserService.getCurrentUser());
 	}
 
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
+	@Operation(summary = "Create a new user")
 	public ResponseEntity<Object> registerUser(@RequestBody RegisterDto registerDto) {
 		//    	try {
 		DBUser existingUser = dbUserService.getDBUserByEmail(registerDto.getEmail());
