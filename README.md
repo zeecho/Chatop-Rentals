@@ -47,7 +47,8 @@ Import the database structure (with root or your newly created user):
 
 Put something like this in src/main/resources/application.properties (or in a file outside the project if possible), replacing your database's credentials with the correct ones:
 
-```spring.application.name=chatop_rentals
+```
+spring.application.name=chatop_rentals
 server.port=3001
 
 logging.level.root=error
@@ -63,7 +64,8 @@ spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.Ph
 
 springdoc.version=@springdoc.version@
 springdoc.swagger-ui.use-root-path=true
-server.forward-headers-strategy=framework```
+server.forward-headers-strategy=framework
+```
 
 ### Start the project
 
